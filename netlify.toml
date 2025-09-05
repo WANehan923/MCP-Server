@@ -1,0 +1,14 @@
+[build]
+  base = "frontend"
+  publish = "frontend/.next"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "18"
+  NEXT_PUBLIC_MCP_SERVER_URL = "https://your-mcp-server.railway.app"
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://your-mcp-server.railway.app/:splat"
+  status = 200
+  force = true

@@ -173,25 +173,45 @@ New MCP Serever/
 └── README.md
 ```
 
-## 🌐 Deployment Options
+## 🌐 Live Deployment
 
-### Local Deployment
-- Build: `npm run build`
-- Start: `npm start`
-- Configure in MCP client
+### 🚀 Quick Deploy (Recommended)
 
-### Cloud Deployment
-- **Railway**: Connect GitHub repo, auto-deploy
-- **Vercel**: Next.js frontend deployment
-- **Heroku**: Full-stack deployment with email service
+**Backend (MCP Server):**
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/your-template-id)
 
-### Environment Variables for Production
+**Frontend (Playground):**
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_USERNAME/nehan-cv-mcp-server&project-name=nehan-cv-playground&repository-name=nehan-cv-playground&root-directory=frontend)
+
+### 📍 Deployment Platforms
+
+| Platform | Backend | Frontend | Auto-Deploy | Free Tier |
+|----------|---------|----------|-------------|-----------|
+| **Railway** | ✅ | ❌ | ✅ | ✅ |
+| **Vercel** | ⚠️ | ✅ | ✅ | ✅ |
+| **Render** | ✅ | ✅ | ✅ | ✅ |
+| **Heroku** | ✅ | ✅ | ✅ | Limited |
+| **Netlify** | ❌ | ✅ | ✅ | ✅ |
+
+### 🔗 Expected Live URLs
+
+After deployment, you'll have:
+- **Backend**: `https://your-app-name.railway.app`
+- **Frontend**: `https://your-project.vercel.app`
+
+### 📋 Environment Variables for Production
 ```env
+# Backend (.env)
 NODE_ENV=production
 EMAIL_USER=your-production-email@gmail.com
 EMAIL_APP_PASSWORD=your-production-app-password
 PORT=3000
+
+# Frontend
+NEXT_PUBLIC_MCP_SERVER_URL=https://your-backend-url.com
 ```
+
+> 📖 **Detailed deployment guide**: See [`docs/DEPLOYMENT_LINKS.md`](./docs/DEPLOYMENT_LINKS.md) for step-by-step instructions
 
 ## 🎯 Key CV Highlights
 
