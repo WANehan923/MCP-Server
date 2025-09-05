@@ -43,13 +43,24 @@ export function CVChat() {
     setIsLoading(true);
 
     try {
-      // For demo purposes, we'll simulate the MCP server response
-      // In a real implementation, you'd call your MCP server endpoint
-      const response = await simulateMCPResponse(inputValue);
+      // Call the real MCP server API
+      const response = await fetch('/api/cv-chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ question: inputValue }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+
+      const data = await response.json();
       
       const botMessage: Message = {
         type: 'bot',
-        content: response,
+        content: data.answer || data.error || 'No response received',
         timestamp: new Date(),
       };
 
@@ -170,45 +181,3 @@ export function CVChat() {
   );
 }
 
-// Simulate MCP server response for demo
-async function simulateMCPResponse(question: string): Promise<string> {
-  // In a real implementation, this would call your MCP server
-  await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
-  
-  const q = question.toLowerCase();
-  
-  if (q.includes('last position') || q.includes('recent job')) {
-    return "My most recent position was TBDA (Trainee Business Development Associate) in the Deposit & Mobilization Unit at NDB Bank, where I worked for 2 months.";
-  }
-  
-  if (q.includes('skills') || q.includes('technology') || q.includes('programming')) {
-    return `My technical skills include:
-- Programming: React, HTML, CSS, JavaScript, Node.js, JAVA, C#, PHP, Python
-- Databases: MySQL, MongoDB, Firebase
-- Cloud: AWS, Google Cloud Platform
-- Design: Figma, Photoshop, Illustrator
-- Other: AI & Machine Learning, IoT, Flutter`;
-  }
-  
-  if (q.includes('education') || q.includes('university') || q.includes('degree')) {
-    return "I'm currently pursuing a BSc (Hons) in Computer Science at Plymouth University - United Kingdom (2022 - 2025). My student ID is 27225. I also completed an Advance Certification Programme for Maths, English, Programming at NSBM Green University in 2022.";
-  }
-  
-  if (q.includes('projects') || q.includes('latest') || q.includes('recent')) {
-    return `My latest projects from 2025:
-- Acceleration-Based User Authentication System - Explore acceleration-based user authentication using ML techniques
-- AI Chatbot For University Inquiries - AI-powered virtual assistant specifically tailored for NSBM Green University
-
-Other recent projects include a Handcraft E-Commerce App using Flutter, Smart Automated Wheelchair System, and NSBM Accommodation Portal.`;
-  }
-  
-  if (q.includes('contact') || q.includes('email') || q.includes('reach')) {
-    return "You can reach me at nehanchandira619@gmail.com or call me at 072 2171358 / 0705868097. You can also find me on GitHub: https://github.com/WANehan923 and LinkedIn: www.linkedin.com/in/nehancmp-bb7a43268";
-  }
-  
-  if (q.includes('about') || q.includes('profile') || q.includes('yourself')) {
-    return "I'm a dedicated Computer Science undergraduate with a strong foundation in software development, cloud computing concepts, and data analysis. I'm passionate about applying academic knowledge to real-world challenges, with a focus on building scalable cloud-based solutions and deriving insights from data. I'm skilled in algorithms, problem-solving, and collaborative teamwork, with a commitment to continuous learning and driving innovative solutions in dynamic IT environments.";
-  }
-  
-  return "I'm not sure about that specific question. You can ask me about my education, work experience, projects, skills, contact information, or personal background. What would you like to know?";
-}

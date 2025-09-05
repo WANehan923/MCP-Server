@@ -10,6 +10,8 @@ import {
 import { CVChatService } from './cv-chat.js';
 import { EmailService, EmailRequest } from './email-service.js';
 import { z } from 'zod';
+import express from 'express';
+import cors from 'cors';
 
 // Initialize services
 const cvChat = new CVChatService();
@@ -176,15 +178,84 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   }
 });
 
+// Create Express app for HTTP API
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+app.use(express.json());
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', message: 'Nehan CV MCP Server is running' });
+});
+
+// CV Chat HTTP endpoint
+app.post('/api/cv-chat', async (req, res) => {
+  try {
+    const { question } = CVChatToolSchema.parse(req.body);
+    const answer = cvChat.answerQuestion(question);
+    res.json({ answer });
+  } catch (error) {
+    res.status(400).json({ error: error instanceof Error ? error.message : 'Invalid request' });
+  }
+});
+
+// Send Email HTTP endpoint
+app.post('/api/send-email', async (req, res) => {
+  try {
+    const emailData = SendEmailToolSchema.parse(req.body) as EmailRequest;
+    const result = await emailService.sendEmail(emailData);
+    res.json(result);
+  } catch (error) {
+    res.status(400).json({ error: error instanceof Error ? error.message : 'Invalid request' });
+  }
+});
+
+// Get Topics HTTP endpoint
+app.get('/api/cv-topics', (req, res) => {
+  try {
+    const topics = cvChat.getAvailableTopics();
+    res.json({ topics });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to get topics' });
+  }
+});
+
+// Email Service Info HTTP endpoint
+app.get('/api/email-service-info', (req, res) => {
+  try {
+    const info = emailService.getEmailServiceInfo();
+    res.json(info);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to get email service info' });
+  }
+});
+
 // Start the server
 async function main() {
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
+  const isMCPMode = process.argv.includes('--mcp') || process.env.MCP_MODE === 'true';
   
-  // Log server info to stderr (won't interfere with MCP communication)
-  console.error('Nehan CV MCP Server started successfully!');
-  console.error('Available tools: cv_chat, send_email, get_cv_topics, email_service_info');
-  console.error('Ready to answer questions about Nehan Chandira\'s background and send email notifications.');
+  if (isMCPMode) {
+    // MCP Server mode (for Claude Desktop)
+    const transport = new StdioServerTransport();
+    await server.connect(transport);
+    
+    console.error('Nehan CV MCP Server started successfully!');
+    console.error('Available tools: cv_chat, send_email, get_cv_topics, email_service_info');
+    console.error('Ready to answer questions about Nehan Chandira\'s background and send email notifications.');
+  } else {
+    // HTTP Server mode (for deployment)
+    app.listen(PORT, () => {
+      console.log(`Nehan CV Server running on port ${PORT}`);
+      console.log(`Health check: http://localhost:${PORT}/health`);
+      console.log('Available endpoints:');
+      console.log(`- POST /api/cv-chat`);
+      console.log(`- POST /api/send-email`);
+      console.log(`- GET /api/cv-topics`);
+      console.log(`- GET /api/email-service-info`);
+    });
+  }
 }
 
 // Handle graceful shutdown

@@ -39,9 +39,16 @@ export function EmailForm() {
     setResponse(null);
 
     try {
-      // For demo purposes, we'll simulate the email sending
-      // In a real implementation, you'd call your MCP server endpoint
-      const result = await simulateEmailSending(formData);
+      // Call the real MCP server API
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
       setResponse(result);
       
       if (result.success) {
@@ -248,23 +255,3 @@ Thanks,`
   );
 }
 
-// Simulate email sending for demo
-async function simulateEmailSending(emailData: EmailFormData): Promise<EmailResponse> {
-  await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate network delay
-  
-  // Simulate success most of the time, occasional failure for demo
-  const success = Math.random() > 0.1;
-  
-  if (success) {
-    return {
-      success: true,
-      message: `Email sent successfully to ${emailData.recipient}`,
-      messageId: `demo-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
-    };
-  } else {
-    return {
-      success: false,
-      message: 'Failed to send email: SMTP configuration not found'
-    };
-  }
-}
