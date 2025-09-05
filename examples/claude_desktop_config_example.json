@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "nehan-cv-server": {
+      "command": "node",
+      "args": ["/Users/nehangunathilaka/New MCP Serever/dist/index.js"],
+      "env": {
+        "EMAIL_USER": "your-email@gmail.com",
+        "EMAIL_APP_PASSWORD": "your-app-password"
+      }
+    }
+  }
+}

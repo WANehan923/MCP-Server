@@ -1,0 +1,200 @@
+#!/usr/bin/env node
+
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import {
+  CallToolRequestSchema,
+  ListToolsRequestSchema,
+  Tool,
+} from '@modelcontextprotocol/sdk/types.js';
+import { CVChatService } from './cv-chat.js';
+import { EmailService, EmailRequest } from './email-service.js';
+import { z } from 'zod';
+
+// Initialize services
+const cvChat = new CVChatService();
+const emailService = new EmailService();
+
+// Define tool schemas
+const CVChatToolSchema = z.object({
+  question: z.string().describe('Question about Nehan\'s CV, experience, or background')
+});
+
+const SendEmailToolSchema = z.object({
+  recipient: z.string().email('Must be a valid email address'),
+  subject: z.string().min(1, 'Subject cannot be empty'),
+  body: z.string().min(1, 'Body cannot be empty')
+});
+
+const GetTopicsToolSchema = z.object({});
+const EmailServiceInfoToolSchema = z.object({});
+
+// Create MCP server
+const server = new Server(
+  {
+    name: 'nehan-cv-mcp-server',
+    version: '1.0.0',
+  },
+  {
+    capabilities: {
+      tools: {},
+    },
+  }
+);
+
+// Define available tools
+const tools: Tool[] = [
+  {
+    name: 'cv_chat',
+    description: 'Ask questions about Nehan Chandira\'s CV, work experience, education, projects, or skills. This tool can answer questions like \"What role did you have at your last position?\", \"What are your technical skills?\", \"Tell me about your projects\", etc.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        question: {
+          type: 'string',
+          description: 'Your question about Nehan\'s background, experience, education, projects, or skills'
+        }
+      },
+      required: ['question']
+    }
+  },
+  {
+    name: 'send_email',
+    description: 'Send an email notification to a specified recipient with a subject and body. Perfect for contact forms, notifications, or reaching out.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        recipient: {
+          type: 'string',
+          format: 'email',
+          description: 'Email address of the recipient'
+        },
+        subject: {
+          type: 'string',
+          description: 'Subject line of the email'
+        },
+        body: {
+          type: 'string',
+          description: 'Main content/body of the email'
+        }
+      },
+      required: ['recipient', 'subject', 'body']
+    }
+  },
+  {
+    name: 'get_cv_topics',
+    description: 'Get a list of topics you can ask about regarding Nehan\'s CV and background.',
+    inputSchema: {
+      type: 'object',
+      properties: {},
+      required: []
+    }
+  },
+  {
+    name: 'email_service_info',
+    description: 'Get information about the email service configuration and setup instructions.',
+    inputSchema: {
+      type: 'object',
+      properties: {},
+      required: []
+    }
+  }
+];
+
+// Handle tool listing
+server.setRequestHandler(ListToolsRequestSchema, async () => {
+  return { tools };
+});
+
+// Handle tool execution
+server.setRequestHandler(CallToolRequestSchema, async (request) => {
+  const { name, arguments: args } = request.params;
+  
+  try {
+    switch (name) {
+      case 'cv_chat': {
+        const { question } = CVChatToolSchema.parse(args);
+        const answer = cvChat.answerQuestion(question);
+        return {
+          content: [
+            {
+              type: 'text',
+              text: answer
+            }
+          ]
+        };
+      }
+      
+      case 'send_email': {
+        const emailData = SendEmailToolSchema.parse(args) as EmailRequest;
+        const result = await emailService.sendEmail(emailData);
+        
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(result, null, 2)
+            }
+          ]
+        };
+      }
+      
+      case 'get_cv_topics': {
+        GetTopicsToolSchema.parse(args);
+        const topics = cvChat.getAvailableTopics();
+        return {
+          content: [
+            {
+              type: 'text',
+              text: `You can ask me about the following topics:\n\n${topics.map((topic, index) => `${index + 1}. ${topic}`).join('\n')}\n\nExample questions:\n- "What role did you have at your last position?"\n- "What are your technical skills?"\n- "Tell me about your latest projects"\n- "What is your educational background?"\n- "How can I contact you?"`
+            }
+          ]
+        };
+      }
+      
+      case 'email_service_info': {
+        EmailServiceInfoToolSchema.parse(args);
+        const info = emailService.getEmailServiceInfo();
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(info, null, 2)
+            }
+          ]
+        };
+      }
+      
+      default:
+        throw new Error(`Unknown tool: ${name}`);
+    }
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      throw new Error(`Invalid arguments: ${error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', ')}`);
+    }
+    throw error;
+  }
+});
+
+// Start the server
+async function main() {
+  const transport = new StdioServerTransport();
+  await server.connect(transport);
+  
+  // Log server info to stderr (won't interfere with MCP communication)
+  console.error('Nehan CV MCP Server started successfully!');
+  console.error('Available tools: cv_chat, send_email, get_cv_topics, email_service_info');
+  console.error('Ready to answer questions about Nehan Chandira\'s background and send email notifications.');
+}
+
+// Handle graceful shutdown
+process.on('SIGINT', async () => {
+  console.error('Shutting down server...');
+  await server.close();
+  process.exit(0);
+});
+
+main().catch((error) => {
+  console.error('Server failed to start:', error);
+  process.exit(1);
+});
