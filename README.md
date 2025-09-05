@@ -2,7 +2,7 @@
 
 A Model Context Protocol (MCP) server that enables AI assistants to chat about Nehan Chandira's CV and send email notifications. This project showcases API design and integration skills through a practical implementation.
 
-## 🚀 Features
+## Features
 
 ### CV Chat Functionality
 - **Intelligent CV Parsing**: Structured data extraction from CV content
@@ -18,13 +18,13 @@ A Model Context Protocol (MCP) server that enables AI assistants to chat about N
 - **Error Handling**: Comprehensive error messages and status reporting
 - **HTML Email Templates**: Professional email formatting
 
-### Next.js Playground (Optional)
+### Next.js Playground
 - **Interactive Frontend**: Test both CV chat and email functionality
 - **Modern UI**: Clean, responsive design with Tailwind CSS
 - **Real-time Chat Interface**: Simulated MCP server interactions
 - **Email Templates**: Pre-built templates for common use cases
 
-## 🛠️ Technical Stack
+## Technical Stack
 
 - **Backend**: TypeScript, Node.js, MCP SDK
 - **Email Service**: Nodemailer with Gmail/SMTP support
@@ -32,13 +32,13 @@ A Model Context Protocol (MCP) server that enables AI assistants to chat about N
 - **Frontend**: Next.js 14, React, Tailwind CSS
 - **Build Tools**: TypeScript compiler, TSX for development
 
-## 📋 Prerequisites
+## Prerequisites
 
 - Node.js 18+ and npm
 - Gmail account (for email functionality)
 - MCP-compatible AI assistant (Claude Desktop, etc.)
 
-## 🔧 Installation & Setup
+## Installation & Setup
 
 ### 1. Clone and Install Dependencies
 
@@ -76,7 +76,7 @@ EMAIL_APP_PASSWORD=your-app-password
 npm run build
 ```
 
-## 🚀 Usage
+## Usage
 
 ### As MCP Server
 
@@ -130,19 +130,6 @@ Chat about Nehan's background and experience.
 ### `send_email`
 Send email notifications to specified recipients.
 
-**Parameters:**
-- `recipient` (string): Email address
-- `subject` (string): Email subject
-- `body` (string): Email content
-
-**Example:**
-```json
-{
-  "recipient": "contact@example.com",
-  "subject": "Hello from Nehan's CV Server",
-  "body": "This is a test email from the MCP server."
-}
-```
 
 ### `get_cv_topics`
 Get available CV topics you can ask about.
@@ -154,28 +141,10 @@ Get email service configuration details.
 
 **Parameters:** None
 
-## 📁 Project Structure
 
-```
-New MCP Serever/
-├── src/
-│   ├── index.ts           # Main MCP server
-│   ├── cv-data.ts         # Structured CV data
-│   ├── cv-chat.ts         # CV chat service
-│   └── email-service.ts   # Email functionality
-├── frontend/              # Optional Next.js playground
-│   ├── app/
-│   ├── components/
-│   └── package.json
-├── dist/                  # Compiled JavaScript
-├── package.json
-├── tsconfig.json
-└── README.md
-```
+## Live Deployment
 
-## 🌐 Live Deployment
-
-### 🚀 Quick Deploy (Recommended)
+###  Quick Deploy
 
 **Backend (MCP Server):**
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/your-template-id)
@@ -183,15 +152,6 @@ New MCP Serever/
 **Frontend (Playground):**
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_USERNAME/nehan-cv-mcp-server&project-name=nehan-cv-playground&repository-name=nehan-cv-playground&root-directory=frontend)
 
-### 📍 Deployment Platforms
-
-| Platform | Backend | Frontend | Auto-Deploy | Free Tier |
-|----------|---------|----------|-------------|-----------|
-| **Railway** | ✅ | ❌ | ✅ | ✅ |
-| **Vercel** | ⚠️ | ✅ | ✅ | ✅ |
-| **Render** | ✅ | ✅ | ✅ | ✅ |
-| **Heroku** | ✅ | ✅ | ✅ | Limited |
-| **Netlify** | ❌ | ✅ | ✅ | ✅ |
 
 ### 🔗 Expected Live URLs
 
@@ -199,37 +159,8 @@ After deployment, you'll have:
 - **Backend**: `https://your-app-name.railway.app`
 - **Frontend**: `https://your-project.vercel.app`
 
-### 📋 Environment Variables for Production
-```env
-# Backend (.env)
-NODE_ENV=production
-EMAIL_USER=your-production-email@gmail.com
-EMAIL_APP_PASSWORD=your-production-app-password
-PORT=3000
-
-# Frontend
-NEXT_PUBLIC_MCP_SERVER_URL=https://your-backend-url.com
-```
 
 > 📖 **Detailed deployment guide**: See [`docs/DEPLOYMENT_LINKS.md`](./docs/DEPLOYMENT_LINKS.md) for step-by-step instructions
-
-## 🎯 Key CV Highlights
-
-This project demonstrates:
-
-- **Full-Stack Development**: TypeScript backend with React frontend
-- **API Integration**: MCP protocol implementation
-- **Email Services**: SMTP integration with proper error handling
-- **Data Modeling**: Structured CV data representation
-- **Modern Tooling**: TypeScript, Next.js, Tailwind CSS
-- **Production Ready**: Environment configuration, error handling, validation
-
-## 👤 About Nehan Chandira
-
-- **Education**: BSc (Hons) Computer Science, Plymouth University (2022-2025)
-- **Experience**: Banking (NDB Bank), QA Testing, Freelance Graphic Design
-- **Skills**: React, Node.js, Python, AWS, AI/ML, Mobile Development
-- **Projects**: AI Chatbots, E-commerce Apps, IoT Systems, Authentication Systems
 
 ## 📞 Contact
 
