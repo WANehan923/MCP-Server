@@ -60,15 +60,16 @@ export function CVChat() {
       
       const botMessage: Message = {
         type: 'bot',
-        content: data.answer || data.error || 'No response received',
+        content: data.answer || 'No response received from the server',
         timestamp: new Date(),
       };
 
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {
+      console.error('Frontend CV Chat error:', error);
       const errorMessage: Message = {
         type: 'bot',
-        content: 'Sorry, I encountered an error processing your request. Please try again.',
+        content: `Connection error: Unable to reach the MCP server. Please check if the backend is deployed and the environment variable NEXT_PUBLIC_MCP_SERVER_URL is configured correctly.`,
         timestamp: new Date(),
       };
       setMessages(prev => [...prev, errorMessage]);

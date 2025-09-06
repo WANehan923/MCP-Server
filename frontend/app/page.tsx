@@ -1,11 +1,40 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CVChat } from '../components/CVChat';
 import { EmailForm } from '../components/EmailForm';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<'chat' | 'email'>('chat');
+  const [backendStatus, setBackendStatus] = useState<'checking' | 'connected' | 'disconnected'>('checking');
+  const backendUrl = process.env.NEXT_PUBLIC_MCP_SERVER_URL;
+
+  useEffect(() => {
+    const checkBackendConnection = async () => {
+      if (!backendUrl) {
+        setBackendStatus('disconnected');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/cv-chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question: 'test connection' }),
+        });
+        
+        if (response.ok) {
+          setBackendStatus('connected');
+        } else {
+          setBackendStatus('disconnected');
+        }
+      } catch (error) {
+        setBackendStatus('disconnected');
+      }
+    };
+
+    checkBackendConnection();
+  }, [backendUrl]);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -18,6 +47,26 @@ export default function Home() {
           <p className="text-gray-600 text-lg">
             Chat about my background or send email notifications
           </p>
+          
+          {/* Backend Connection Status */}
+          <div className="mt-4 flex items-center justify-center gap-2">
+            <div className={`w-3 h-3 rounded-full ${
+              backendStatus === 'connected' ? 'bg-green-500' : 
+              backendStatus === 'checking' ? 'bg-yellow-500' : 'bg-red-500'
+            }`}></div>
+            <span className={`text-sm ${
+              backendStatus === 'connected' ? 'text-green-600' : 
+              backendStatus === 'checking' ? 'text-yellow-600' : 'text-red-600'
+            }`}>
+              {backendStatus === 'connected' ? 'Backend Connected' : 
+               backendStatus === 'checking' ? 'Checking Connection...' : 'Backend Disconnected'}
+            </span>
+            {backendUrl && (
+              <span className="text-xs text-gray-500 ml-2">
+                ({new URL(backendUrl).hostname})
+              </span>
+            )}
+          </div>
           <div className="flex justify-center mt-4 space-x-2">
             <a
               href="https://github.com/WANehan923"
