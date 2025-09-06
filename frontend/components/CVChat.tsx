@@ -12,7 +12,7 @@ export function CVChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       type: 'bot',
-      content: "Hi! I'm Nehan's CV assistant. Ask me anything about my background, education, work experience, projects, or skills. Try asking: 'What role did you have at your last position?' or 'What are your technical skills?'",
+      content: "Hi! I&apos;m Nehan&apos;s CV assistant. Ask me anything about my background, education, work experience, projects, or skills. Try asking: &apos;What role did you have at your last position?&apos; or &apos;What are your technical skills?&apos;",
       timestamp: new Date(),
     },
   ]);

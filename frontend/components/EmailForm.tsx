@@ -243,7 +243,7 @@ Thanks,`
           <h4 className="text-sm font-medium text-blue-800 mb-2">Email Service Configuration</h4>
           <p className="text-sm text-blue-700">
             This demo uses a simulated email service. In the real MCP server implementation, 
-            you'll need to configure your email credentials (Gmail, SMTP, etc.) via environment variables.
+            you&apos;ll need to configure your email credentials (Gmail, SMTP, etc.) via environment variables.
           </p>
           <div className="mt-2 text-xs text-blue-600">
             <p>• EMAIL_USER: Your email address</p>
