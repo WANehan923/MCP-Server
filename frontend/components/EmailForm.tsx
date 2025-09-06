@@ -153,7 +153,7 @@ Thanks,`
               onChange={handleInputChange}
               required
               placeholder="recipient@example.com"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-black font-medium"
             />
           </div>
 
@@ -169,7 +169,7 @@ Thanks,`
               onChange={handleInputChange}
               required
               placeholder="Email subject"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-black font-medium"
             />
           </div>
 
@@ -185,7 +185,7 @@ Thanks,`
               required
               rows={6}
               placeholder="Your message..."
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 resize-vertical"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 resize-vertical text-black font-medium"
             />
           </div>
 

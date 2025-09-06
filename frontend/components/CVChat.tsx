@@ -166,7 +166,7 @@ export function CVChat() {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Ask me anything about my background..."
-            className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black font-medium"
             disabled={isLoading}
           />
           <button
