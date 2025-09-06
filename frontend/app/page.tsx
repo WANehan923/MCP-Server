@@ -29,11 +29,15 @@ export default function Home() {
           setBackendStatus('disconnected');
         }
       } catch (error) {
+        console.error('Connection check failed:', error);
         setBackendStatus('disconnected');
       }
     };
 
-    checkBackendConnection();
+    // Only check connection on client side to avoid SSR issues
+    if (typeof window !== 'undefined') {
+      checkBackendConnection();
+    }
   }, [backendUrl]);
 
   return (
@@ -63,7 +67,7 @@ export default function Home() {
             </span>
             {backendUrl && (
               <span className="text-xs text-gray-500 ml-2">
-                ({new URL(backendUrl).hostname})
+                ({backendUrl.replace(/^https?:\/\//, '')})
               </span>
             )}
           </div>
