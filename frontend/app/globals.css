@@ -37,3 +37,11 @@ body {
 .bot-message {
   @apply bg-gray-100 mr-8;
 }
+
+/* Ensure suggestion buttons have proper font rendering */
+.suggestion-button {
+  font-family: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}

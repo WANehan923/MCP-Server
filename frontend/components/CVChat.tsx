@@ -143,14 +143,14 @@ export function CVChat() {
       </div>
 
       {/* Suggestions */}
-      <div className="border-t p-4">
-        <h3 className="text-sm font-medium text-gray-700 mb-2">Try asking:</h3>
-        <div className="flex flex-wrap gap-2">
+      <div className="border-t p-4 bg-gray-50">
+        <h3 className="text-sm font-semibold text-gray-800 mb-3">💡 Try asking:</h3>
+        <div className="flex flex-wrap gap-3">
           {suggestions.map((suggestion, index) => (
             <button
               key={index}
               onClick={() => handleSuggestionClick(suggestion)}
-              className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full transition-colors"
+              className="suggestion-button text-sm font-medium bg-white hover:bg-blue-50 text-gray-800 hover:text-blue-700 px-4 py-2 rounded-full transition-all duration-200 border border-gray-300 hover:border-blue-300 shadow-sm hover:shadow-md active:scale-95"
             >
               {suggestion}
             </button>
