@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-const { Server } = require('@modelcontextprotocol/sdk/server/index.js');
-const { StdioServerTransport } = require('@modelcontextprotocol/sdk/server/stdio.js');
-const {
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
-} = require('@modelcontextprotocol/sdk/types.js');
-const https = require('https');
+} from '@modelcontextprotocol/sdk/types.js';
+import https from 'https';
 
 const REMOTE_SERVER_URL = 'https://mcp-server-production-6aa7.up.railway.app';
 
