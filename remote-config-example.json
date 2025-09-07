@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "nehan-cv-remote": {
+      "command": "node",
+      "args": ["/Users/nehangunathilaka/New MCP Serever/mcp-remote-wrapper.js"],
+      "description": "Nehan's CV server via remote deployment"
+    }
+  }
+}
